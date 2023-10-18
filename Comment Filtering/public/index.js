@@ -2,10 +2,10 @@ async function reviewComment(){
     let comment = document.querySelector("#comment");
 
     try {
-        const response = await fetch(`http://localhost:3000/verify?text=${comment.value}`)
-        const res = response.json();
-        
-        if(res.score !== -1){
+        const response = await fetch(`http://localhost:5000/analyze?text=${comment.value}`)
+        const res = await response.json();
+        console.log(res);
+        if(res >= 0){
             let currentdate = new Date(); 
             let datetime = "Posted at: " + currentdate.getDate() + "/"
                         + (currentdate.getMonth()+1)  + "/" 
