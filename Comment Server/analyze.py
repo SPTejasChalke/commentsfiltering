@@ -1,16 +1,25 @@
 import nltk
-
-text = "This is a very nice day"
-nltk.download('vader_lexicon')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-sid = SentimentIntensityAnalyzer()
-score = ((sid.polarity_scores(str(text))))['compound']
+nltk.download('vader_lexicon')
 
-if(score > 0):
-    label = 'This sentence is positive'
-elif(score == 0):
-    label = 'This sentence is neutral'
-else:
-    label = 'This sentence is negative'
+from flask import Flask, render_template
 
-print(label)
+app = Flask(__name__)
+
+@app.route("/analyze/<text>")
+def foo(text):
+    
+    sid = SentimentIntensityAnalyzer()
+    score = ((sid.polarity_scores(str(text))))['compound']
+
+    if(score > 0):
+        label = 'This sentence is positive'
+    elif(score == 0):
+        label = 'This sentence is neutral'
+    else:
+        label = 'This sentence is negative'
+    
+    return str(score) + ": " + label + " | " + text
+
+if __name__== "__main__":
+    app.run()
